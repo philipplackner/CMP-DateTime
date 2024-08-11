@@ -22,16 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.UtcOffset
-import kotlinx.datetime.format
-import kotlinx.datetime.format.char
-import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import kotlin.time.Duration.Companion.hours
 
 data class City(
     val name: String,
@@ -58,7 +52,7 @@ fun App() {
             )
         }
         LaunchedEffect(true) {
-            while(true) {
+            while (true) {
                 cityTimes = cities.map {
                     val now = Clock.System.now()
                     it to now.toLocalDateTime(it.timeZone)
@@ -87,31 +81,12 @@ fun App() {
                         horizontalAlignment = Alignment.End
                     ) {
                         Text(
-                            text = dateTime
-                                .format(
-                                    LocalDateTime.Format {
-                                        hour()
-                                        char(':')
-                                        minute()
-                                        char(':')
-                                        second()
-                                    }
-                                ),
+                            text = getDateTimeAdapter().formatLocalTime(dateTime.time),
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Light
                         )
                         Text(
-                            text = dateTime
-                                .format(
-                                    LocalDateTime.Format {
-                                        dayOfMonth()
-                                        char('/')
-                                        monthNumber()
-                                        char('/')
-                                        year()
-                                    }
-                                ),
-                            fontSize = 16.sp,
+                            text = getDateTimeAdapter().formatLocalDate(dateTime.date),
                             fontWeight = FontWeight.Light,
                             textAlign = TextAlign.End
                         )
